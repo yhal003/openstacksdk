@@ -15,6 +15,9 @@ from openstack import resource
 from openstack.shared_file_system.v2 import (
     availability_zone as _availability_zone)
 from openstack.shared_file_system.v2 import (
+    share_access_rule as _share_access_rule
+)
+from openstack.shared_file_system.v2 import (
     share_snapshot as _share_snapshot
 )
 from openstack.shared_file_system.v2 import (
@@ -318,3 +321,25 @@ class Proxy(proxy.Proxy):
                  to delete failed to occur in the specified seconds.
         """
         return resource.wait_for_delete(self, res, interval, wait)
+
+    def access_rules(self, share, **query):
+        """Lists the share access rules on a share.
+
+        :returns: A generator of the share access rules.
+        :rtype: :class:`~openstack.shared_file_system.v2.
+            share_access_rules.ShareAccessRules`
+        """
+        share = self._get_resource(_share.Share, share)
+        return self._list(
+            _share_access_rule.ShareAccessRule,
+            share_id=share.id, **query)
+
+    def get_access_rule(self, access_id):
+        """List details of an access rule.
+
+        :returns: Details of the identified access rule.
+        :rtype: :class:`~openstack.shared_file_system.v2.
+            share_access_rules.ShareAccessRules`
+        """
+        return self._get(
+            _share_access_rule.ShareAccessRule, access_id)

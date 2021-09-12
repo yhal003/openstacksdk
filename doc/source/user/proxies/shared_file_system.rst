@@ -79,3 +79,13 @@ service.
   :noindex:
   :members: share_snapshots, get_share_snapshot, delete_share_snapshot,
             update_share_snapshot, create_share_snapshot
+
+
+Shared File System Share Access Rules
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+View access rules for shares from the Shared File Systems service.
+
+.. autoclass:: openstack.shared_file_system.v2._proxy.Proxy
+  :noindex:
+  :members: access_rules, get_access_rule

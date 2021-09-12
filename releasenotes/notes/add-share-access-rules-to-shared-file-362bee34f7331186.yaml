@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Added support to list and get share access rules with the
+    shared file system service.

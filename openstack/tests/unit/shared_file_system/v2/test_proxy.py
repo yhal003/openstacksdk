@@ -12,6 +12,9 @@
 
 from unittest import mock
 
+from openstack.shared_file_system.v2 import (
+    share_access_rule
+)
 from openstack.shared_file_system.v2 import _proxy
 from openstack.shared_file_system.v2 import limit
 from openstack.shared_file_system.v2 import share
@@ -172,3 +175,22 @@ class TestShareSnapshotResource(test_proxy_base.TestProxyBase):
         self.proxy.wait_for_delete(mock_resource)
 
         mock_wait.assert_called_once_with(self.proxy, mock_resource, 2, 120)
+
+
+class TestAccessRuleProxy(test_proxy_base.TestProxyBase):
+
+    def setUp(self):
+        super(TestAccessRuleProxy, self).setUp()
+        self.proxy = _proxy.Proxy(self.session)
+
+    def test_access_rules(self):
+        self.verify_list(
+            self.proxy.access_rules,
+            share_access_rule.ShareAccessRule,
+            method_args=["test_share"],
+            expected_args=[],
+            expected_kwargs={"share_id": "test_share"})
+
+    def test_access_rules_get(self):
+        self.verify_get(
+            self.proxy.get_access_rule, share_access_rule.ShareAccessRule)
