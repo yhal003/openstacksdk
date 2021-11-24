@@ -1222,3 +1222,10 @@ class TestQuota(TestComputeProxy):
             quota_set.QuotaSet,
             'qs', a='b'
         )
+
+    def test_trigger_server_crash_dump(self):
+        self._verify(
+            "openstack.compute.v2.server.Server.trigger_crash_dump",
+            self.proxy.trigger_server_crash_dump,
+            method_args=["value"],
+            expected_args=[self.proxy])

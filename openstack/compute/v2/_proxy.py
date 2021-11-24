@@ -1934,6 +1934,18 @@ class Proxy(proxy.Proxy):
         else:
             return server.get_console_url(self, console_type)
 
+    # ========== Server dump ==========
+
+    def trigger_server_crash_dump(self, server):
+        """Trigger crash dump of a server.
+
+        :param server: Either the ID of a server or a
+            :class:`~openstack.compute.v2.server.Server` instance.
+        :returns: None
+        """
+        server = self._get_resource(_server.Server, server)
+        server.trigger_crash_dump(self)
+
     # ========== Quota sets ==========
 
     def get_quota_set(self, project, usage=False, **query):

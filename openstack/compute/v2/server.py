@@ -574,5 +574,9 @@ class Server(resource.Resource, metadata.MetadataMixin, tag.TagMixin):
 
         return self
 
+    def trigger_crash_dump(self, session):
+        """Trigger a crash dump followed by a system reboot of the server."""
+        self._action(session, {'trigger_crash_dump': None})
+
 
 ServerDetail = Server

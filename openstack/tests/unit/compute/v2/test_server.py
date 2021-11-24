@@ -1054,3 +1054,16 @@ class TestServer(base.TestCase):
         self.sess.get.assert_called_with(url)
 
         self.assertEqual(sot.security_groups, sgs)
+
+    def test_trigger_crash_dump(self):
+        sot = server.Server(**EXAMPLE)
+
+        res = sot.trigger_crash_dump(self.sess)
+
+        self.assertIsNone(res)
+        url = 'servers/IDENTIFIER/action'
+        body = {'trigger_crash_dump': None}
+
+        headers = {'Accept': ''}
+        self.sess.post.assert_called_with(
+            url, json=body, headers=headers, microversion=None)
