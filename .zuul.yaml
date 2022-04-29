@@ -101,16 +101,9 @@
     parent: openstacksdk-functional-devstack-base
     description: |
       Run openstacksdk functional tests against a legacy devstack
+    nodeset: openstack-single-node-bionic
     voting: false
-    vars:
-      devstack_localrc:
-        ENABLE_IDENTITY_V2: true
-        FLAT_INTERFACE: br_flat
-        PUBLIC_INTERFACE: br_pub
-      tox_environment:
-        OPENSTACKSDK_USE_KEYSTONE_V2: 1
-        OPENSTACKSDK_HAS_NEUTRON: 0
-    override-branch: stable/newton
+    override-branch: stable/ussuri
 
 - job:
     name: openstacksdk-functional-devstack
@@ -448,7 +441,7 @@
 - project:
     templates:
       - check-requirements
-      - openstack-python3-yoga-jobs
+      - openstack-python3-zed-jobs
       - openstacksdk-functional-tips
       - openstacksdk-tox-tips
       - os-client-config-tox-tips
@@ -459,7 +452,7 @@
       jobs:
         - opendev-buildset-registry
         - nodepool-build-image-siblings
-        # - dib-nodepool-functional-openstack-centos-8-stream-src
+        - dib-nodepool-functional-openstack-centos-8-stream-src
         - openstacksdk-functional-devstack
         - openstacksdk-functional-devstack-networking
         - openstacksdk-functional-devstack-senlin
@@ -470,6 +463,8 @@
         - openstacksdk-functional-devstack-masakari:
             voting: false
         - openstacksdk-functional-devstack-ironic:
+            voting: false
+        - openstacksdk-functional-devstack-legacy:
             voting: false
         - osc-functional-devstack-tips:
             voting: false
@@ -486,7 +481,7 @@
       jobs:
         - opendev-buildset-registry
         - nodepool-build-image-siblings
-        # - dib-nodepool-functional-openstack-centos-8-stream-src
+        - dib-nodepool-functional-openstack-centos-8-stream-src
         - openstacksdk-functional-devstack
         - openstacksdk-functional-devstack-networking
         - openstacksdk-functional-devstack-senlin

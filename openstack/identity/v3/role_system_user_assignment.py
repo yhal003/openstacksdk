@@ -13,25 +13,16 @@
 from openstack import resource
 
 
-class QoSRuleType(resource.Resource):
-    resource_key = 'rule_type'
-    resources_key = 'rule_types'
-    base_path = '/qos/rule-types'
-
-    _allow_unknown_attrs_in_body = True
+class RoleSystemUserAssignment(resource.Resource):
+    resource_key = 'role'
+    resources_key = 'roles'
+    base_path = '/system/users/%(user_id)s/roles'
 
     # capabilities
-    allow_create = False
-    allow_fetch = True
-    allow_commit = False
-    allow_delete = False
     allow_list = True
 
-    _query_mapping = resource.QueryParameters(
-        'type', 'drivers', 'all_rules', 'all_supported')
-
     # Properties
-    #: QoS rule type name.
-    type = resource.Body('type', alternate_id=True)
-    #: List of QoS backend drivers supporting this QoS rule type
-    drivers = resource.Body('drivers')
+    #: The name of the system to list assignment from. *Type: string*
+    system_id = resource.URI('system_id')
+    #: The ID of the user to list assignment from. *Type: string*
+    user_id = resource.URI('user_id')

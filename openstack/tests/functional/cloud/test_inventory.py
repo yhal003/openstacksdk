@@ -21,21 +21,15 @@ Functional tests for `shade` inventory methods.
 
 from openstack.cloud import inventory
 from openstack.tests.functional import base
-from openstack.tests.functional.cloud.util import pick_flavor
 
 
 class TestInventory(base.BaseFunctionalTest):
     def setUp(self):
-        super(TestInventory, self).setUp()
+        super().setUp()
         # This needs to use an admin account, otherwise a public IP
         # is not allocated from devstack.
         self.inventory = inventory.OpenStackInventory(cloud='devstack-admin')
         self.server_name = self.getUniqueString('inventory')
-        self.flavor = pick_flavor(
-            self.user_cloud.list_flavors(get_extra=False))
-        if self.flavor is None:
-            self.assertTrue(False, 'no sensible flavor available')
-        self.image = self.pick_image()
         self.addCleanup(self._cleanup_server)
         server = self.operator_cloud.create_server(
             name=self.server_name, image=self.image, flavor=self.flavor,
@@ -47,7 +41,6 @@ class TestInventory(base.BaseFunctionalTest):
 
     def _test_host_content(self, host):
         self.assertEqual(host['image']['id'], self.image.id)
-        self.assertNotIn('id', host['flavor'])
         self.assertIsInstance(host['volumes'], list)
         self.assertIsInstance(host['metadata'], dict)
         self.assertIn('interface_ip', host)
@@ -78,9 +71,6 @@ class TestInventory(base.BaseFunctionalTest):
         self.assertEqual(host['image']['id'], self.image.id)
         self.assertNotIn('links', host['image'])
         self.assertNotIn('name', host['name'])
-        self.assertNotIn('id', host['flavor'])
-        self.assertNotIn('links', host['flavor'])
-        self.assertNotIn('name', host['flavor'])
         self.assertIn('ram', host['flavor'])
 
         host_found = False
